@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+alias pd="pushd"
+alias pdh="pushd ~"
+alias ppd="popd"
+alias less=/usr/bin/nvimpager
+
+alias ys="yay -Ss"
+alias yy="yay -S"
+alias yql="yay -Ql"
+alias yyoc="yay -S --noconfirm --overwrite \*"
+alias yyo="yay -S --overwrite \*"
+alias yyu="yay -Syyu --noconfirm --overwrite \*"
+alias yql="yay -Ql"
+
+alias gp='git add . && git commit -m "auto push" && git push'
+alias zrc='nvim ~/.zshrc'
+

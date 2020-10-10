@@ -1,0 +1,32 @@
+#!/bin/bash
+fatal() {
+    echo "fatal: $@"
+    exit 1
+}
+[[ -f ~/.ethermine ]] || fatal "nope"
+. ~/.ethermine
+api="https://api.ethermine.org"
+stats=$(curl -s $api/networkStats)
+status=$(echo $stats | jq '.status')
+[[ "$status" =~ "OK" ]] || fatal $status
+data=$(curl -s $api/miner/$miner/currentStats)
+status=$(echo $data | jq '.status')
+[[ "$status" =~ "OK" ]] || fatal $status
+hrr=$(echo $data | jq '.data.reportedHashrate' | awk '{printf "%.1f",$1*1E-6}') #'*1e-6}')
+hra=$(echo $data | jq '.data.averageHashrate' | awk '{printf "%.1f",$1*1E-6}')
+hrc=$(echo $data | jq '.data.currentHashrate' | awk '{printf "%.1f",$1*1E-6}')
+na=$(echo $data | jq '.data.activeWorkers')
+# echo "hrr $hrr"
+unpaid=$(echo $data | jq '.data.unpaid' | awk '{printf "%.9f",$1*10E-19}')
+# echo "unpaid $unpaid"
+daily=$(echo $data | jq '.data.coinsPerMin'| awk '{printf "%.2f",$1*24*60*1000}')
+# echo "daily $daily"
+usd=$(echo $stats | jq '.data.usd' | awk '{printf "%.3f",$1}')
+uusd=$(echo $unpaid $usd | awk '{printf "%.3f",$1*$2}')
+
+# adjust units and precision
+uusd=$(echo "$uusd" | awk '{printf "%.2f",$1}') # $A.BC
+usd=$(echo "$usd" | awk '{printf "%.2f",$1}') # milliether
+unpaid=$(echo $unpaid | awk '{printf "%.2f",$1*1000}') # milliether
+echo "$hrr/$hra/$hrc | $daily mΞ/day (${na}xw) | $unpaid mΞ = \$$uusd @ $usd\$/Ξ"
+

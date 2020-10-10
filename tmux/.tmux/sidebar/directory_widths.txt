@@ -1,0 +1,2 @@
+/home/tom	1
+/home/tom	40

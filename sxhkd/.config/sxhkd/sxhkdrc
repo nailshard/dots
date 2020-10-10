@@ -1,70 +1,47 @@
 #
 # wm independent hotkeys
 #
-
-
-XF86AudioRaiseVolume
-    pamixer -i 5
-XF86AudioLowerVolume
-    pamixer -d 5
-XF86AudioMute
-    pamixer -t
-XF86AudioMicMute
-    ~/bin/mute-mic
-
-XF86MonBrightnessUp
-    light -A 1
-XF86MonBrightnessDown
-    light -U 1
-super + XF86MonBrightnessUp
-    light -A 5
-super + XF86MonBrightnessDown
-    light -U 5
-
-super + shift + v
-    ~/bin/vpn -t office-vpn
+XF86WakeUp; a
+    notify-send.sh yay
 
 # terminal emulator
-super + Return
-    ~/bin/terminal
-	#alacritty -e tmux
 super + shift + Return
-	/usr/bin/chromium
+    $HOME/bin/term
+super + Return
+    $HOME/bin/to_current myterm
+super + alt + Return
+    $HOME/bin/to_current Slack
+super + space
+    tdrop -ma -w 70% -h 70% -y 15% -x 15% -s scratch -f '-e tmux' kitty
 
 # program launcher
-super + d
-    ~/bin/launcher drun
-super + Tab
-    ~/bin/launcher window
-super + r
-    ~/bin/launcher run
-#    rofi -show window
-#  rofi -show drun
-#	dmenu_run
+super + {_,shift +} {d,r,Tab}
+    {_,sudo} rofi -show {drun,run,window}
+#super + x
+#    rofi-autrandr
+super + x
+    ~/bin/menu.sh | rofi -dmenu -theme menu
 
-super + e
-    ranger
+# make sxhkd reload its configuration files:
+super + shift + Escape
+	pkill -USR1 -x sxhkd
+super + Escape
+    xscreensaver-command -lock
 
-super + @space
-   ~/bin/scratchy
 super + v
     pavucontrol
-# make sxhkd reload its configuration files:
-super + BackSpace
-	pkill -USR1 -x sxhkd; \
-    notify-send "sxhkd config reloadde"
-ctrl + super + BackSpace
-    xscreensaver-command -lock
 #
 # bspwm hotkeys
 #
 
-# quit bspwm normally
+# quit/restart bspwm
 super + alt + Escape
-	bspc quit
+    ~/.config/bspwm/bspwmrc -r
+super + alt + shift + {q,r}
+	bspc {quit,wm -r}
 
 # close and kill
-super + {_,shift + }w
+super + {_,ctrl + }q
 	bspc node -{c,k}
 
 # alternate between the tiled and monocle layout
@@ -88,79 +65,23 @@ super + {t,shift + t,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
 # set the node flags
-super + ctrl + {m,x,y,z}
+super + alt + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
 
 #
 # focus/swap
 #
-# Focus node
-# If no window exist, target monitor/desktop instead
-super + k
-  bspc node -f north || bspc monitor -f north
-super + j
-  bspc node -f south || bspc monitor -f south
-super + h
-  bspc node -f west || bspc monitor -f west || bspc desktop -f west
-super + l
-  bspc node -f east || bspc monitor -f east || bspc desktop -f east
 
-# Swap node
-# If no node exist, send node to monitor instead
-super + shift + h
-  if ! bspc node -s west.local; then bspc node -m west && bspc node $(bspc query -N -n last) -f; fi
-super + shift + l
-  if ! bspc node -s east.local; then bspc node -m east && bspc node $(bspc query -N -n last) -f; fi
-super + shift + k
-  if ! bspc node -s north.local; then bspc node -m north && bspc node $(bspc query -N -n last) -f; fi
-super + shift + j
-  if ! bspc node -s south.local; then bspc node -m south && bspc node $(bspc query -N -n last) -f; fi
-
-#
 # focus the node in the given direction
-#super + ctrl {h,j,k,l}
-
-#    ~/bin/sxhkd/movenode {west,south,north,east}
-#super + shift + {h,j,k,l}
- #   ~/bin/sxhkd/swapnode {west,south,north,east}
-	#bspc node -s {west,south,north,east}
-#super + {h,j,k,l}
-#    bspc config pointer_follows_monitor true; \
-#    bspc config pointer_follows_focus true; \
-#    dir={west,south,north,east}; \
-#    if ! bspc node -f $dir; then \
-#        bspc monitor -f $dir; \
-#    fi; \
-#    bspc config pointer_follows_monitor false; \
-#    bspc config pointer_follows_focus false
-
-#super + shift + {h,j,k,l}
-#    bspc config pointer_follows_focus true; \
-#    cur_win=$(bspc query -M -n) \
-#    cur_mon=$(bspc query -M -m); \
-#    dir={west,south,north,east}; \
-#    echo $dir; \
-#    if ! bspc node -f $dir; then \
-#        bspc node -m $dir; \
-#        bspc monitor -f $dir; \
-#    else \
-#        new_mon=$(bspc query -M -m); \
-#        if [ "$new_mon" = "$cur_mon" ]; then \
-#            bspc node -s $cur_win; \
-#        else \
-#            bspc node $cur_win -m ^$new_mon; \
-#        fi; \
-#        bspc node -f $cur_win; \
-#    fi; \
-#    bspc config pointer_follows_focus false
+super + {_,ctrl + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
 
 # focus the node for the given path jump
 super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
-#super + {<,>}
-#bspc config window_gap $(echo $(bspc config window_gap){-,+}4|bc)
+
 # focus the next/previous node in the current desktop
-super + {_,shift + }c
+super + {_,ctrl + }c
 	bspc node -f {next,prev}.local
 
 # focus the next/previous desktop in the current monitor
@@ -178,23 +99,9 @@ super + {o,i}
 	bspc wm -h on
 
 # focus or send to the given desktop
-#super + {_,shift + }{1-9,0}
-#	bspc {desktop -f,node -d} '^{1-9,10}'
-#super + {_,shift + }{1-9,0}
-#    bspc {desktop -f, window -d} $(bspc query -M -m)/{a,b,c}
-# focus or send to the given desktop
-super + {_,shift + }{1-9,0}
-    bspc {desktop -f,node -d} {1-9,10}
-    #bspc {desktop -f,node -d} $(bspc query -M -m)/'^{1-9,10}'
-super + ctrl + {_,shift +} {1-9}
-	bspc {monitor -f, node -m} '^{1-9}'
-super + w
-    bspc monitor -f next
-super + ctrl + s
-    echo "~/bin/wp" ; \
-    ~/bin/wp
-super + shift + ctrl + s
-    ~/bin/monitors
+super + {_,ctrl + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
 #
 # preselect
 #
@@ -212,7 +119,7 @@ super + alt + space
 	bspc node -p cancel
 
 # cancel the preselection for the focused desktop
-super + alt + space
+super + alt + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 #
@@ -220,13 +127,82 @@ super + alt + space
 #
 
 # expand a window by moving one of its side outward
-super + ctrl + {h,j,k,l}
-	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+# super + shift + {h,j,k,l}
+#	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+# super + shift + {h,j,k,l}
+#	resize {west,south,north,east}
+# Smart resize, will grow or shrink depending on location.
+# Will always grow for floating nodes.
+super + shift + {h,j,k,l}
+  n=10; \
+  { d1=left;   d2=right;  dx=-$n; dy=0;   \
+  , d1=bottom; d2=top;    dx=0;   dy=$n;  \
+  , d1=top;    d2=bottom; dx=0;   dy=-$n; \
+  , d1=right;  d2=left;   dx=$n;  dy=0;   \
+  } \
+  bspc node --resize $d1 $dx $dy || bspc node --resize $d2 $dx $dy
 
 # contract a window by moving one of its side inward
-super + ctrl + shift + {h,j,k,l}
-	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+# super + alt + shift + {h,j,k,l}
+# 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+XF86AudioRaiseVolume
+    pactl set-sink-volume @DEFAULT_SINK@ +10%
+
+XF86AudioLowerVolume
+    pactl set-sink-volume @DEFAULT_SINK@ -10%
+
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+XF86AudioMicMute
+    pactl set-source-mute @DEFAULT_SOURCE@ toggle## #
+## XF86AudioRaiseVolume
+##     pactl -- set-sink-volume 0 +5% #increase sound volume
+## XF86AudioLowerVolume
+##     pactl -- set-sink-volume 0 -5% #decrease sound volume
+## XF86AudioMute
+##     pactl set-sink-mute 0 toggle # mute sound
+## XF86AudioMicMute
+##     pactl set-source-mute 0 toggle # mute sound
+## 
+#bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer -D pulse sset Master '5%+'"
+#bindsym XF86AudioLowerVolume exec --no-startup-id "amixer -D pulse sset Master '5%-'"
+#bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle"
+
+XF86AudioPlay
+    playerctl play-pause
+XF86AudioNext
+    playerctl next
+XF86AudioPrev
+    playerctl previous
+
+# Sreen brightness controls
+XF86MonBrightnessUp
+    light  -A 1 # increase screen brightness
+XF86MonBrightnessDown
+    light  -U 1 # decrease screen brightness
+shift + XF86MonBrightnessUp
+    light -S 100% # increase screen brightness
+shift + XF86MonBrightnessDown
+    light -r -S 10 # decrease screen brightness
+ctrl + alt + {_,shift + }p
+    fname={'%Y-%m-%d_%H-%M-%S_$wx$h.png',$(zenity --entry --text "s")} ; \
+    echo $fname ; \
+    cmd="scrot -s '$fname' -e 'mv \$f ~/Pictures/Screenshots/'" ; \
+    echo $cmd ; \
+    bash -c $cmd
+#ctrl + shift + p
+#    scrot -s zenity --entry --text="ENTER A FILENAME"
+
+#super + {_,shift + }
+
+Print
+     scrot -s '%Y-%m-%d_%h-%m-%s_$wx$h_scrot.png' \
+     -e 'mv $f ~/Pictures/Screenshots/'
+#ctrl + Print
+#     zenity --question --text="Do you wish to continue/?"

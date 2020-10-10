@@ -1,0 +1,14 @@
+#!/bin/bash
+
+case $(( $RANDOM%2 )) in
+    0) 
+        def_iface=$(ip route show default | grep -Po 'dev \K.*?(?= )')
+        ss_bin=ncmatrix
+        ss_args="-s -b -u 10 -I $def_iface -C blue -T red -R yellow"
+        ;;
+    1) 
+        ss_bin=pipes.sh
+        ss_args=""
+        ;;
+esac
+$ss_bin $ss_args

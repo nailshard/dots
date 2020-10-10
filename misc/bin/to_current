@@ -1,0 +1,11 @@
+#!/bin/bash
+find_class="$1"
+echo $find_class
+for id in $(bspc query -N -n .window); do
+    if [[ $(xprop -id $id | grep WM_CLASS | awk '{print $NF}' | tr -d \") == \
+        $find_class ]]; then
+       bspc node $id -d $(bspc query -T -d | jq -r .name)
+       break
+    fi
+done
+

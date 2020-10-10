@@ -1,0 +1,15 @@
+#!/usr/bin/python
+# TODO: Implement scrolling
+
+import feedparser
+
+#  nwz = feedparser.parse("https://news.ycombinator.com/rss")
+feeds = [
+    "news", "technology", "science", "politics", "business", "watchexchange"
+]
+feed = ""
+for f in feeds:
+    feed += f + "+"
+nwz = feedparser.parse("http://www.reddit.com/r/technology.rss")
+for f in range(0, 1):
+    print(nwz.entries[f].title)

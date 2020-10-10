@@ -1,0 +1,98 @@
+#!/bin/bash
+. ~/.weather
+if which wedder >/dev/null; then
+    touch /tmp/wedder.log
+    echo $(date) >> /tmp/wedder.log
+    fmt="<icon> <temperature>°F in <city>"
+    wedder --weather-api-key $OPW_KEY \
+        --interval -1 \
+        --location-provider Ip \
+        --temperature-unit Fahrenheit \
+        --wind-speed-unit Mph \
+        --format "$fmt" \
+        | tee -a /tmp/wedder.log
+    echo >> /tmp/wedder.log
+else
+get_icon() {
+	case $1 in
+		01d) icon="";;
+		01n) icon="";;
+		02d) icon="";;
+		02n) icon="";;
+		03*) icon="";;
+		04*) icon="";;
+		09d) icon="";;
+		09n) icon="";;
+		10d) icon="";;
+		10n) icon="";;
+		11d) icon="";;
+		11n) icon="";;
+		13d) icon="";;
+		13n) icon="";;
+		50d) icon="";;
+		50n) icon="";;
+		*) icon="";
+	esac
+
+	echo $icon
+}
+
+get_duration() {
+	date --date="@$1" +%I:%M
+}
+
+function get_polybar_text() {
+	UNITS="imperial"
+	SYMBOL="°"
+    wurl="api.openweathermap.org/data/2.5/weather?q=$LOCATION&APPID=$OPW_KEY&units=$UNITS"
+    furl="api.openweathermap.org/data/2.5/forecast?q=$LOCATION&APPID=$OPW_KEY&units=$UNITS&cnt=1"
+    # echo $wurl
+    # curl -sf $wurl
+	# current=$(curl -sf "http://api.openweathermap.org/data/2.5/weather?APPID=$OPW_KEY&id=$CITY&units=$UNITS")
+    current=$(curl -sf $wurl)
+	# forecast=$(curl -sf "http://api.openweathermap.org/data/2.5/forecast?APPID=$OPW_KEY&id=$CITY&units=$UNITS&cnt=1")
+    forecast=$(curl -sf $furl)
+
+	if [ ! -z "$current" ] && [ ! -z "$forecast" ]; then
+        
+		current_temp=$(echo "$current" | jq ".main.temp" | cut -d "." -f 1)
+		current_icon=$(echo "$current" | jq -r ".weather[].icon")
+
+		forecast_temp=$(echo "$forecast" | jq ".list[].main.temp" | cut -d "." -f 1)
+		forecast_icon=$(echo "$forecast" | jq -r ".list[].weather[].icon")
+
+		if [[ "$current_temp" -gt "$forecast_temp" ]]; then
+			trend=""
+		elif [ "$forecast_temp" -gt "$current_temp" ]; then
+			trend=""
+		else
+			trend=""
+		fi
+
+		sun_rise=" $(get_duration "$(echo "$current" | jq ".sys.sunrise")")"
+		sun_set=" $(get_duration "$(echo "$current" | jq ".sys.sunset")")"
+
+		echo "$(get_icon "$current_icon") $current_temp$SYMBOL  $trend  $(get_icon "$forecast_icon") $forecast_temp$SYMBOL   $sun_rise   $sun_set"
+	else
+		echo "%{F$1}%{F-} Unable to get forecast"
+	fi
+}
+
+function open_browser() {
+	xdg-open "https://openweathermap.org/city/${CITY}"
+}
+
+case $1 in
+"-p")
+	[ "$#" -ne 2 ] && echo "Missing inactive color code." && exit 1
+	get_polybar_text $2
+	;;
+"-o")
+	open_browser
+	;;
+*)
+	echo "Invalid parameter." && exit 1
+	;;
+esac
+fi
+exit 0

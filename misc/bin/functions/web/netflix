@@ -1,0 +1,16 @@
+#!/usr/bin/dash
+# sdothum - 2016 (c) wtfpl
+
+# Web
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ...................................................................... Browser
+
+BROWSER=firefox
+
+videomode on
+$BROWSER http://www.netflix.com/ca
+pwait "$BROWSER.*netflix"
+videomode off
+
+# vim: set ft=sh: #

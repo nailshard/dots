@@ -1,1 +1,5 @@
-../../../misc/bin/run_startup
+#!/bin/bash
+pushd ~/bin/startup
+20-color-correction
+88-wallpaper
+99-bar restart

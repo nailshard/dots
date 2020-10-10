@@ -3,13 +3,14 @@ clear mod4
 clear mod5
 clear lock
 clear control
-keycode 0x97 = ISO_Level3_Shift
+!keycode 0x97 = ISO_Level3_Shift
+!keycode 0x97 = Hyper_L
 keycode 0x42 = Control_L
 keycode 0x25 = Mode_switch
 !keycode 105 = ISO_Level3_Shift
-keycode 0x40 = Super_L
+keycode 0x40 = Super_L Super_L Hyper_L Hyper_L
 keycode 0x85 = Alt_L
-keycode 0x6c = Super_R
+keycode 0x6c = Super_R Super_R Hyper_R Hyper_R
 keycode 0x2b = h H Left Home Left Home
 keycode 0x2c = j J Down Next Next
 keycode 0x2d = k K Up Prior Prior
@@ -20,10 +21,10 @@ keycode 0x28 = d D Prior Prior
 keycode 0x29 = f F End End
 keycode 0x16 = BackSpace Delete
 !keycode 0xad = Super_L
-!keycode 110 = Left
-!keycode 113 = Down
-!keycode 116 = Up
-!keycode 114 = Right
+keycode 116 = Down Next
+keycode 113 = Left Home 
+keycode 111 = Up Prior
+keycode 114 = Right End
 !keycode 173 = Alt_L
 !keycode 171 = Super_L
 !keycode 63 = Super_R

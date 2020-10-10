@@ -1,0 +1,39 @@
+#!/usr/bin/dash
+# sdothum - 2016 (c) wtfpl
+
+# Web
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ...................................................................... Browser
+
+QUTEBROWSER='/usr/bin/qutebrowser --target tab --override-restore'
+
+STARTPAGE=$SESSION/startpage
+pong $SERVER && TTRSS=$SERVER || TTRSS=localhost
+size="$(fontsize)pt monospace"
+
+[ $1 ] && startpage="$@" || { [ -e $STARTPAGE ] && startpage=$(cat $STARTPAGE) || startpage='http://luna:8000/tt-rss/'; }
+startpage=$(escape $startpage)  # must \escape '&' in url
+
+font="
+  -s fonts.completion.category '$size'
+  -s fonts.completion.entry '$size'
+  -s fonts.debug_console '$size'
+  -s fonts.downloads '$size'
+  -s fonts.hints '$size'
+  -s fonts.keyhint '$size'
+  -s fonts.messages.error '$size'
+  -s fonts.messages.info '$size'
+  -s fonts.messages.warning '$size'
+  -s fonts.prompts '$size'
+  -s fonts.statusbar '$size'
+  -s fonts.tabs '$size'
+"
+
+if pgrep -f "$QUTEBROWSER" >/dev/null ;then
+  eval $QUTEBROWSER $font :open\\ -w\\ $startpage & 
+else
+  eval $QUTEBROWSER $font $startpage & 
+fi
+
+# vim: set ft=sh: #

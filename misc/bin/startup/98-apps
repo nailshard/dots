@@ -10,7 +10,7 @@ unkil() {
 
 
 [[ -n $myshit ]] || \
-    myshit=( slack telegram-desktop signal-desktop unclutter nm-applet dunst )
+    myshit=( slack telegram-desktop signal-desktop unclutter nm-applet )
 for shit in ${myshit[@]}; do
     case $1 in
         start) unkil $shit ;;

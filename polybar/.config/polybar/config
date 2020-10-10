@@ -1,443 +1,495 @@
-;==========================================================
-;
-;
-;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
-;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
-;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
-;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
-;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
-;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
-;
-;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/jaagr/polybar
-;
-;   The README contains alot of information
-;
-;==========================================================
+;--------------------------------------------------------------------;
+; Common
+;--------------------------------------------------------------------;
 
 [colors]
-background = ${gruvbox.bg-dark}
-background-alt = ${gruvbox.bg-light}
-foreground = ${gruvbox.fg-dark}
-foreground-alt = ${gruvbox.fg-light}
-primary = #ffb52a
-secondary = #e60053
-alert = #bd2c40
-transparent = #000000000
+black0 = #1d2821
+black1= ${xrdb:color0:#282828}
+black2 = ${xrdb:color8:#928374}
+red1 = ${xrdb:color1:#cc241d}
+red2 = ${xrdb:color9:#fb4934}
+green1 = ${xrdb:color2:#98971a}
+green2 = ${xrdb:color10:#b8bb26}
+yellow1 = ${xrdb:color3:#d79921}
+yellow2 = ${xrdb:color11:#fabd2f}
+blue1 = ${xrdb:color4:#458588}
+blue2 = ${xrdb:color12:#83a598}
+magenta1 = ${xrdb:color5:#b16286}
+magenta2 = ${xrdb:color13:#d3869b}
+cyan1 = ${xrdb:color6:#689d6a}
+cyan2 = ${xrdb:color14:#8ec07c}
+white1 = ${xrdb:color7:#a89984}
+white2 = ${xrdb:color15:#ebdbb2}
+orange1 = #d65d0e
+orange2 = #fe8019
+background = #aa282828 
+;${xrdb:background:#7e282828}
+foreground = ${xrdb:foreground:#ebdbb2}
+background-alt = ${xrdb:background-alt:#32302f}
+foreground-alt = ${xrdb:foreground-alt:#a89984}
+accent = ${xrdb:color14:#8ec07c}
+linecolor = background-alt
+bordercolor = black2
 
-[i3ws]
-ws1 = Misc
-ws2 = Slack
-ws3 = Browser
-ws4 = Communication
-ws5 = Virtual
-ws6 = Terminal1
-ws7 = Terminal2
-ws8 = Whatever
-ws9 = Terminal3
-ws10 = Misc2
-ws11 = Misc3
 
+[common/bar]
+override-redirect = false
 
-[gruvbox]
-bg-dark = #ff1d2021
-fg-dark = #ebdbb2
-bg-light = fbf1c7
-fg-light = #3c3836
-red = #cc241d
-green = #98971a
-yellow = #d79921
-blue = #458588
-purple = #b16286
-aqua = #689d6a
-gray = #a89984
-
-[general]
-padding = 2
-
-[bar/top]
-monitor = ${env:MONITOR:}
-width = 100%
-height = 27
-bottom = false
-offset-x = 0
-offset-y = 0
-radius = 0.0
+width = ${env:PM_BAR_WIDTH:98%}
+height = ${env:PM_BAR_HEIGHT:3%}
+offset-x = 1%
+offset-y = 1%
+radius = 0
 fixed-center = true
+
+; font-0 = "IBM Plex Sans:weight=Regular:size=12;4"
+font-0 = "SFMonoPowerline:weight=Regular:size=12;4"
+font-1 = "FontAwesome5Free:style=Solid:pixelsize=12.5;3"
+font-2 = "FontAwesome5Brands:style=Solid:pixelsize=12;3"
+; font-3 = "Weather Icons:size=16;3"
+; font-3 = "Cascadia Code iCursive Cg:pixelsize=12;3"
+font-3 = "Material Icons:pixelsize=17;7"
+font-4 = "Ionicons:style=Regular:pixelsize=20;2"
+font-5 = "Spy Agency:pixelsize=12;4"
+font-6 = "Spy Agency Laser:pixelsize=12;4"
+font-7 = "Geforce:style=Bold:pixelsize=12;5"
+font-8 = "Cascadia Code iCursive Cg:pixelsize=24;6"
+
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 1
-line-color = #eee
+line-size = 4
+line-color = ${colors.linecolor}
 
-border-size = 3
-border-color = ${colors.background}
+border-size = 0
 
-padding-left = 1
-padding-right = 1
+padding-left = 3
+padding-right = 3
 
-module-margin-left = 0
+module-margin-left  = 0
 module-margin-right = 0
 
-font-0 = xos4 Terminus:style=Regular:size=14;2
-font-1 = Inconsolata Nerd Font:style=Regular:size=14;2
-font-2 = Font Awesome 5 Free:pixelsize=10;2
-font-3 = Inconsolata Nerd Font:style=Regular:size=21;3
+modules-left = weathericon weathertext
+modules-center = crypto
+modules-right = clock
 
-modules-left = i3 powermenu alsa date temperature arrow1
-modules-center = xwindow
-modules-right = arrow2 wlan battery backlight memory time
+wm-restack = bspwm
 
-tray-position = right
-tray-background = #282828
-tray-padding = 3
-tray-offset-x = 0
-tray-offset-y = 0
-tray-maxsize = 20
-tray-detached = false
+locale = en_US.UTF-8
 
-override-redirect = false
+click-left =
+click-middle =
+click-right =
+scroll-up =
+scroll-down =
+double-click-left =
+double-click-middle =
+double-click-right =
 
-;wm-restack = bspwm
-;wm-restack = i3
+[common/bar-secondary]
+inherit = common/bar
 
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
+bottom = true
 
-scroll-up = i3wm-wsnext
-scroll-down = i3wm-wsprev
+modules-left = bspwm-secondary gap-small title
+modules-center =
+modules-right =
 
-separator =
+[common/bspwm]
+type = internal/bspwm
 
-cursor-click = pointer
-cursor-scroll = ns-resize
-
-[module/xwindow]
-type = internal/xwindow
-label = %title%
-label-maxlen = 30
-label-empty = swaggity
-format-padding = ${general.padding}
-format-prefix-font = 2
-format-background = #282828
-format-foreground = ${colors.foreground}
-
-
-[module/i3]
-type = internal/i3
-inherit = i3ws
-format = <label-state> <label-mode>
-index-sort = true
-wrapping-scroll = false
-
-; Only show workspaces on the same output as the bar
 pin-workspaces = true
+inline-mode = false
+enable-click = true
+enable-scroll = true
+reverse-scroll = true
+fuzzy-match = true
 
-ws-icon-0 = Misc;
-ws-icon-1 = Slack;
-ws-icon-2 = Web;
-ws-icon-3 = IM;
-ws-icon-4 = Virt;
-ws-icon-5 = Term1;
-ws-icon-6 = Term2;
-ws-icon-7 = Misc2;
-ws-icon-8 = Term3;
-ws-icon-9 = Misc3;
-ws-icon-default = 
+format = <label-state> <label-mode>
 
-label-mode-padding = ${general.padding}
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
+label-dimmed-foreground = ${colors.foreground-alt}
 
-; focused = Active workspace on focused monitor
-label-focused = %icon% %name%
-label-focused-foreground = ${colors.foreground}
-label-focused-background = ${gruvbox.green}
-label-focused-padding = ${self.label-mode-padding}
+label-dimmed-occupied = %icon%
+label-dimmed-occupied-foreground = ${colors.foreground-alt}
+label-dimmed-occupied-padding = 1
 
-; unfocused = Inactive workspace on any monitor
-label-unfocused = %icon%
-label-unfocused-padding = ${self.label-focused-padding}
-label-unfocused-foreground = ${colors.foreground}
-label-unfocused-background = #282828
+label-dimmed-empty = %icon%
+label-dimmed-empty-foreground = ${colors.background-alt}
+label-dimmed-empty-padding = 1
 
-; visible = Active workspace on unfocused monitor
-label-visible = %icon%
-label-visible-background = #282828
-label-visible-foreground = ${self.label-focused-foreground}
-format-visible-padding = ${self.label-focused-padding}
+label-focused = %icon%
+label-focused-foreground = ${colors.accent}
+label-focused-background = ${colors.background-alt}
+label-focused-underline = ${colors.accent}
+label-focused-padding = 1
 
-; urgent = Workspace with urgency hint set
+label-occupied = %icon%
+label-occupied-foreground = ${colors.foreground}
+label-occupied-padding = 1
+
 label-urgent = %icon%
-label-urgent-background = ${colors.alert}
-label-urgent-padding = ${self.label-focused-padding}
+label-urgent-foreground = ${colors.orange2}
+label-urgent-background = ${colors.black0}
+label-urgent-padding = 1
 
+label-empty = %icon%
+label-empty-foreground = ${colors.blue1}
+label-empty-padding = 1
 
-[module/arrow2]
+label-monocle = 
+label-monocle-foreground = ${colors.yellow1}
+label-tiled = 
+label-tiled-foreground = ${colors.yellow1}
+label-fullscreen = 
+label-fullscreen-foreground = ${colors.cyan2}
+label-floating = 
+label-floating-foreground = ${colors.cyan2}
+label-pseudotiled = P
+label-pseudotiled-foreground = ${colors.cyan2}
+label-locked = " "
+label-locked-foreground = ${colors.red1}
+label-sticky = " "
+label-sticky-foreground = ${colors.cyan1}
+label-private = " "
+label-private-foreground = ${colors.black2}
+
+[module/bspwm-secondary]
+inherit = common/bspwm
+
+ws-icon-0 = terminal;
+ws-icon-1 = code;
+ws-icon-default = 
+
+[module/title]
+type = internal/xwindow
+format-padding = 0
+format-foreground = ${colors.blue2}
+label = %title:0:30:...%
+
+[module/gap-small]
 type = custom/text
-content = 
-content-foreground = #282828
-content-background = ${colors.background}
-content-font = 3
+content = "  "
 
-[module/arrow1]
+[module/gap]
 type = custom/text
-content = 
-content-foreground = #282828
-content-background = ${colors.background}
-content-font = 3
-
-[module/backlight]
-type = internal/backlight
-
-; Use the following command to list available cards:
-; $ ls -1 /sys/class/backlight/
-card = intel_backlight
-format = <label> <bar>
-
-; Available tokens:
-;   %percentage% (default)
-label =  %percentage%%
-
-; Only applies if <ramp> is used
-ramp-0 = 🌕
-ramp-1 = 🌔
-ramp-2 = 🌓
-ramp-3 = 🌒
-ramp-4 = 🌑
-
-; Only applies if <bar> is used
-bar-width = 10
-bar-indicator = |
-bar-indicator-foreground = ${xrdb:foreground:#fff}
-bar-indicator-font = 2
-bar-fill = -
-bar-fill-font = 2
-bar-fill-foreground = ${xrdb:color12:#9f78e1}
-bar-empty = ─
-bar-empty-font = 2
-bar-empty-foreground = ${colors.foreground-alt}
-
-
-[module/xbacklight]
-type = internal/xbacklight
-
-; format = <label>  <bar>
-format = <label>
-format-prefix = "  "
-format-prefix-foreground = ${gruvbox.yellow}
-label = %percentage%%
-format-background = ${colors.background}
-format-foreground = ${colors.foreground}
-format-padding = ${general.padding}
-
-
-[module/memory]
-type = internal/memory
-interval = 2
-format-prefix = "  "
-format-prefix-foreground = ${gruvbox.blue}
-format-background = #282828
-format-padding = ${general.padding}
-label = %percentage_used%%
-
-[module/wlan]
-type = internal/network
-interface = wlp2s0
-interval = 3.0
-format-connected-background = #282828
-
-format-connected = <label-connected>
-label-connected = %{A1:networkmanager_dmenu:}直%{A}
-format-connected-padding = ${general.padding}
-
-format-connected-foreground = ${gruvbox.purple}
-
-format-disconnected =
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${gruvbox.purple}
-
-
-[module/date]
-type = internal/date
-interval = 5
-
-date = %a %d %b %Y
-
-format-prefix = "  "
-format-prefix-foreground = ${gruvbox.blue}
-format-padding = ${general.padding}
-format-background = #282828
-label = %date%
-
-[module/time]
-type = internal/date
-interval = 1
-
-time = %H:%M:%S
-
-format-background = #282828
-
-format-prefix = "  "
-format-prefix-foreground = ${gruvbox.green}
-format-padding = ${general.padding}
-
-label = %time%
+content = "     "
 
 [module/pulseaudio]
 type = internal/pulseaudio
 
-; format-volume = <label-volume>  <bar-volume>
-format-volume = <ramp-volume>  <label-volume>
-label-volume = %percentage%%
-format-volume-padding = ${general.padding}
 
-label-muted =  
-label-muted-foreground = ${gruvbox.red}
-format-muted-padding = ${self.format-volume-padding}
+
+use-ui-max = false
+label-volume = %percentage%%
+interval = 5
+label-volume-foreground = ${colors.green2}
+format-volume = <ramp-volume> <label-volume>
+label-muted = 
+label-muted-foreground = ${colors.black2}
 
 ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
-ramp-volume-foreground = ${gruvbox.red}
+
+click-right = pavucontrol
+click-left = amixer set Master toggle
+
+;--------------------------------------------------------------------;
+; Top panel
+;--------------------------------------------------------------------;
+
+[bar/top]
+inherit = common/bar
+
+padding-left = 3
+
+monitor = ${env:MON:eDP-1}
+;dpi = ${env:PM_DPI:110}
+
+modules-left = weathericon weathertext
+modules-center = crypto
+modules-right = gap clock
 
 
-[module/alsa]
-type = internal/alsa
-inherit = module/pulseaudio
+[module/apps]
+type = custom/text
+content = 
+content-foreground = ${colors.magenta2}
+content-background = ${colors.background}
+content-padding = 3
+click-left = rofi -show drun
 
-format-volume = <label-volume> <bar-volume>
-format-volume-background = #282828
-label-volume =  %percentage%%
-label-volume-foreground = ${gruvbox.gray}
-;label-volume-background = #282828
-;
-format-muted-prefix = " "
-format-muted-background = #282828
-format-muted-foreground = ${colors.foreground}
-label-muted = Muted
-label-muted-background = #282828ay
-;
-bar-volume-width = 16
-bar-volume-foreground-0 = ${gruvbox.green}
-bar-volume-gradient = false
-bar-volume-indicator = 
-bar-volume-indicator-font = 1
-bar-volume-fill = 
-bar-volume-fill-font = 1
-bar-volume-empty = 
-bar-volume-empty-font = 1
-bar-volume-empty-foreground = #636363
-;
+[module/crypto]
+type = custom/script
+label-font = 1
+label-foreground = ${colors.foreground}
+label = ETH %output:0:65%
+exec = ~/bin/crypto
+interval = 900
+
+[module/news]
+type = custom/script
+label-font = 1
+label-foreground = ${colors.foreground}
+label =   %output:0:60%...
+exec = ~/.config/polybar/scripts/news
+double-click-left = firefox https://news.ycombinator.com/
+interval = 120
+
+[module/clock]
+type = custom/script
+label-font = 0
+label =   %output%
+exec = ~/.config/polybar/scripts/clock
+interval = 5
+click-left = ~/.config/polybar/scripts/calendar
+
+[module/weathericon]
+type = custom/script
+label = %output:1:4%
+label-font = 9 
+exec = ~/bin/weather -i
+interval = 300
+[module/weathertext]
+type = custom/script
+label = %output:0:45%
+label-font = 0 
+exec = ~/bin/weather -t
+interval = 300
+
+
+
+[module/spotify]
+type = custom/script
+interval = 1
+label-font = 1
+format-prefix = " "
+format = <label>
+exec = python ~/.config/polybar/scripts/spotify -f '{artist}: {song}'
+label = %output:0:30%
+
+[module/now-playing]
+type = custom/script
+label = %output:0:100%
+exec = python -u -W ignore ~/.config/polybar/scripts/now_playing -a '${colors.cyan1}' -i '${colors.blue1}'
+tail = true
+click-left = playerctl play-pause
+click-middle = playerctl next
+click-right = playerctl previous
+
+;--------------------------------------------------------------------;
+; Bottom panel
+;--------------------------------------------------------------------;
+
+[bar/bottom]
+inherit = common/bar
+
+tray-position = right
+tray-detatched = true
+tray-padding = 3
+tray-maxsize = 22
+fixed-center = true
+enable-ipc = true
+monitor = ${env:MON:eDP-1}
+; dpi = ${env:PM_DPI:110}
+
+bottom = true
+padding-left = 3
+
+modules-left = gap-small bspwm gap-small uptime 
+modules-center = title
+modules-right = cpu-usage gap-small memory gap-small network gap-small pulseaudio gap-small redshift gap-small updates gap battery gap-small
+
+[module/bspwm]
+inherit = common/bspwm
+
+ws-icon-0 = terminal;
+ws-icon-1 = code;
+ws-icon-2 = tor;
+ws-icon-3 = web;
+ws-icon-4 = music;
+ws-icon-5 = chat;
+ws-icon-6 = misc;
+ws-icon-default = 
+
+[module/uptime]
+type = custom/script
+exec = uptime -p | tr -d '[:alpha:] ' | tr ',' ':'
+interval = 60
+label =   %output%
+
+[module/cpu-brand]
+type = custom/text
+content = %{T6}RYZ%{T-}%{T7}E%{T-}%{T6}N%{T-}
+
+[module/cpu-usage]
+type = internal/cpu
+interval = 5
+format-prefix = " "
+label = %percentage%%
+
+
+[module/memory]
+type = internal/memory
+interval = 5
+format-prefix = " "
+label = %percentage_used%%
+
+[module/filesystem]
+type = internal/fs
+interval = 30
+mount-0 = /
+
+format-mounted-prefix = %{A1:baobab:}  %{A}
+label-mounted = %{A1:baobab:}%percentage_used%%%{A}
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.red2}
+
+[module/network]
+type = internal/network
+interface = ${env:WLAN} 
+
+interval = 5
+ping-interval = 0
+accumulate-stats = false
+
+format-connected = <ramp-signal><label-connected>
+format-disconnected = <label-disconnected>
+format-packetloss = <label-connected>
+label-connected-foreground = ${colors.magenta2}
+label-connected = %essid%
+label-signal = %signal%
+label-disconnected =  Disconnected
+label-disconnected-foreground = ${colors.magenta1}
+
+ramp-signal-0 = %{T5}%{T-}
+ramp-signal-1 = %{T5}%{T-}
+ramp-signal-2 = %{T5}%{T-}
+ramp-signal-3 = %{T5}%{T-}
+ramp-signal-4 = %{T5}%{T-}
+
+; [module/usb-audio]
+; inherit = common/pulseaudio
+; sink = alsa_output.usb-Focusrite_Scarlett_2i2_USB-00.analog-stereo
+
+[module/redshift]
+type = custom/script
+exec = ~/.config/polybar/scripts/rsctl -p '#626483' '#8be9fd' '#f1fa8c' '#ff5555'
+interval = 5
+click-left = ~/.config/polybar/scripts/rsctl -t
+
+[module/updates]
+type = custom/script
+label =  %output%
+exec = ~/.config/polybar/scripts/updates -p
+interval = 600
+click-left = ~/.config/polybar/scripts/updates -g
+
 
 [module/battery]
 type = internal/battery
-battery = BAT0
-adapter = AC
-full-at = 98
 
-format-charging = <animation-charging>  <label-charging>
-format-charging-padding = ${general.padding}
+full-at = 99
+battery = ${env:$BAT:BAT0}
+adapter = ${env:$ACAD:AC}
+poll-interval = 2
+time-format = %H:%M
 
-format-charging-background = #282828
+format-charging = <animation-charging> <label-charging>
+format-charging-padding = 1
+format-charging-foreground = ${colors.magenta1}
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
 
-format-discharging = <ramp-capacity>  <label-discharging>
-format-discharging-padding = ${self.format-charging-padding}
-format-discharging-background = #282828
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-padding = 1
+format-discharging-foreground = ${colors.magenta2}
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
 
-format-full-prefix = "  "
-format-full-prefix-foreground = ${gruvbox.green}
-format-full-padding = ${general.padding}
-format-full-background = #282828
+label-full =  100% 
+label-full-foreground = ${colors.green2}
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-ramp-capacity-foreground = ${gruvbox.green}
+[module/power-menu]
+type = custom/text
+content-foreground = ${colors.red2}
+content = 
+click-right = mygtkmenu ~/.config/mygtkmenu/power-menu
 
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-animation-charging-foreground = ${gruvbox.green}
-animation-charging-framerate = 750
-animation-charging-font = 2
+;--------------------------------------------------------------------;
+; Tray
+;--------------------------------------------------------------------;
 
-animation-discharging-0 = 
-animation-discharging-1 = 
-animation-discharging-2 = 
-animation-discharging-foreground = ${gruvbox.green}
-animation-discharging-framerate = 750
+[bar/tray]
+monitor = ${env:PM_NAME:eDP-1}
+dpi = ${env:PM_DPI:110}
+bottom = true
+background = ${colors.background}
 
-[module/temperature]
-type = internal/temperature
-thermal-zone = 0
-base-temperature = 45
-warn-temperature = 70
-interval = 1
+width = 1%
+height = ${env:PM_BAR_HEIGHT:3%}
+offset-x = 98.5%
+offset-y = 0.5%
 
-format = <ramp>  <label>
-format-warn = <ramp>  <label-warn>
-format-padding = ${general.padding}
-format-warn-padding = ${self.format-padding}
-format-background = #282828
+modules-left = gap
+modules-center =
+modules-right =
 
-label = %temperature-c%
-label-warn = %temperature-c%
-label-warn-foreground = ${gruvbox.red}
+tray-position = right
+tray-detatched = true
+tray-padding = 3
+tray-maxsize = 22
 
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${gruvbox.aqua}
+;--------------------------------------------------------------------;
+; Left panel
+;--------------------------------------------------------------------;
 
-[module/powermenu]
-type = custom/menu
+[bar/left]
+inherit = common/bar-secondary
 
-expand-right = true
+monitor = ${env:LM_NAME:eDP-1}
+dpi = ${env:LM_DPI:110}
 
-format-spacing = 1
-format-background = #282828
+height = ${env:LM_BAR_HEIGHT:2.75%}
 
-menu-0-0 = Reboot
-menu-0-0-exec = reboot
-menu-0-1 = Hibernate
-menu-0-1-exec = systemctl hibernate
-menu-0-2 = Poweroff
-menu-0-2-exec = sudo poweroff
+;--------------------------------------------------------------------;
+; Right panel
+;--------------------------------------------------------------------;
 
+[bar/right]
+inherit = common/bar-secondary
 
-; label-open = 
-format-prefix = "  "
-format-prefix-foreground = ${gruvbox.red}
-label-open = Power
-label-open-foreground = ${colors.foreground}
-label-close = Cancel
-label-close-foreground = ${gruvbox.red}
-label-separator = |
-label-separator-foreground = ${gruvbox.purple}
-format-padding = ${general.padding}
+monitor = ${env:RM_NAME:eDP-1}
+dpi = ${env:RM_DPI:110}
 
+height = ${env:RM_BAR_HEIGHT:2.75%}
+
+;--------------------------------------------------------------------;
+; General
+;--------------------------------------------------------------------;
 
 [settings]
+
+throttle-output = 5
+throttle-output-for = 10
+throttle-input-for = 30
 screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
+compositing-background = over
+compositing-foreground = over
+compositing-overline = over
+compositing-underline = over
+compositing-border = over
 ;compositing-foreground = source
 ;compositing-border = over
-;pseudo-transparency = false
 
 [global/wm]
-margin-top = 5
-margin-bottom = 5
+margin-top = 0
+margin-bottom = 0
 
-; vim:ft=dosini
+;  vim: set ft=dosini ts=4 sw=4 tw=79 et :

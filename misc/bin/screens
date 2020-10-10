@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+if [[ "betelgeuse" == "$(hostname)"  ]]; then
+    echo 1
+    MODE="2560x1440"
+    xrandr --output eDP-1 --primary --auto \
+        --output DP-1-1.1 --mode $MODE --right-of eDP-1 \
+        --output DP-1-1.2 --mode $MODE --right-of DP-1-1.1 \
+        --output DP-1-1.3 --mode $MODE --right-of DP-1-1.2 
+else
+    echo 2
+    n=9
+    m=$(xrandr | grep " connected" | awk '{print $1}' | wc -l)
+    d=1
+    i=0
+    for s in $(xrandr | grep " connected" | awk '{print $1}'); do
+        desktops=""
+        for i in $(seq 1 $(($n/$m))); do
+            desktops="$desktops $d"
+            d=$(($d+1))
+        done
+        cmd="bspc monitor $s -d $desktops"
+        zsh -c $cmd
+    done
+fi

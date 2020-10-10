@@ -1,0 +1,65 @@
+{
+    "coc.preferences.formatOnSaveFiletypes": ["css", "Markdown", "yaml"],
+    "coc.preferences.snippets.enable": true,
+    "coc.preferences.useQuickfixForLocations": true,
+    "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+    "diagnostic.virtualText": true,
+    "diagnostic.virtualTextPrefix": " # ",
+    "diagnostic.refreshOnInsertMode": false,
+    "diagnostic.refreshAfterSave": false,
+    "diagnostic.checkCurrentLine": true,
+    "diagnostic.messageTarget": "echo",
+    "diagnostic.enableSign": false,
+
+    "list.source.files.excludePatterns": ["**/.git/**", "**/.ccls-cache/**"],
+    "coc.preferences.colorSupport": true,
+    "highlight.colors.enable": true,
+    "python.linting.enabled": true,
+    "python.jediEnabled": false,
+    "python.jediShortcut": "LS",
+    "python.analysis.openFilesOnly": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": false,
+    "python.linting.pydocstyleEnabled": true,
+    "python.formatting.provider": "autopep8",
+    "signature.target": "echo",
+    "suggest.autoTrigger": "always",
+    "suggest.triggerAfterInsertEnter": true,
+    "suggest.snippetIndicator": "►",
+    "suggest.maxCompleteItemCount": 40,
+    "suggest.labelMaxLength": 40,
+    "suggest.floatEnable": false,
+    "suggest.timeout": 5000,
+    "suggest.completionItemKindLabels": {
+        "text": "t",
+        "method": "m",
+        "function": ""
+    },
+    "suggest.localityBonus": true,
+    "languageserver": {
+        "go": {
+            "command": "gopls",
+            "rootPatterns": ["go.mod"],
+            "trace.server": "verbose",
+            "filetypes": ["go"]
+        },
+        "sh": {
+            "command": "bash-language-server", 
+            "args": ["start"],
+            "filetypes": ["sh"]
+        },
+        "yaml": {
+            "command": "yaml-language-server",
+            "args": ["--stdio"],
+            "trace.server": "verbose",
+            "filetypes": ["yaml"],
+            "format": {
+                "singleQuote": true,
+                "bracketSpacing": false,
+                "enable": true,
+                "proseWrap": "preserve"
+            }
+        }
+    }
+}
+

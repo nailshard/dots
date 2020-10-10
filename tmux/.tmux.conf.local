@@ -313,16 +313,18 @@ set -g mode-keys vi
 ## unbind C-a
 ## unbind C-b
 ## set -g prefix C-a
-## set -g prefix2 C-=
 ## bind C-a send-prefix
 ## bind C-= send-prefix -2
 ## bind-key -n S-S command-prompt "find-window -N '%%'"
-##
+##``
 unbind C-a
 unbind C-b
 set -g prefix 'C-\'
 bind-key 'C-\' send-prefix
-
+#set -g prefix2 'C-w'
+#bind-key 'C-w' send-prefix -2
+set -g prefix2 "M-C-S-F12"
+bind-key M-C-S-F12 send-prefix -2
 
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
 | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"

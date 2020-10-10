@@ -1,0 +1,1 @@
+/home/tom/.zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme

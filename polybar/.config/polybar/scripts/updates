@@ -1,0 +1,50 @@
+#!/bin/bash
+
+NO_UPDATES="No updates available"
+FAILED_QUERY="Could not query remote server"
+OFFICIAL_HEADING="<big><b>Official</b></big>"
+AUR_HEADING="<big><b>AUR</b></big>"
+GAP="\n\n"
+
+function count_lines() {
+	echo $(echo "$1" | awk NF | wc -l)
+}
+
+function query() {
+	OUTPUT=$($1 2>/dev/null)
+	NUM=$(count_lines "$OUTPUT")
+
+	if [ $? -eq 0 ]; then
+		[ "$OUTPUT" == ":: No AUR updates found..." ] && NUM=0 # Fix for Trizen
+		[ "$NUM" -eq 0 ] && OUTPUT=$NO_UPDATES
+	else
+		NUM=$(count_lines "$OUTPUT")
+		OUTPUT=$FAILED_QUERY
+	fi
+
+	echo "COUNT=$NUM; OUTPUT=\"$OUTPUT\""
+}
+
+[ "$#" -lt 1 ] && echo "Missing parameters." && exit 1
+
+case $1 in
+"-p")
+	eval "$(query 'checkupdates')"
+	STATUS=$COUNT
+
+	eval "$(query 'trizen -Su --aur')"
+	STATUS="${STATUS}/${COUNT}"
+
+	echo "${STATUS}"
+;;
+"-g")
+	eval "$(query 'checkupdates')"
+	SYSTEM_STATUS="${OFFICIAL_HEADING}${GAP}${OUTPUT}"
+
+	eval "$(query 'trizen -Su --aur')"
+	AUR_STATUS="${AUR_HEADING}${GAP}${OUTPUT}"
+
+	yad --mouse --no-buttons --close-on-unfocus --borders=10 --text="${SYSTEM_STATUS}${GAP}${AUR_STATUS}"
+;;
+*) echo "Invalid parameter." && exit 1 ;;
+esac

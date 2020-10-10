@@ -1,1 +1,0 @@
-../src/golden/golden.py

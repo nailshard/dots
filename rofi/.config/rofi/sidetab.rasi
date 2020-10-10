@@ -4,17 +4,20 @@
  */
 
 configuration {
-	show-icons:      false;
+	display-drun:    "Activate";
+	display-run:     "Execute";
+	display-window:  "Window";
+	show-icons:      true;
 	sidebar-mode:    true;
 }
 
 * {
-	background-color:            argb:50323232;
-	text-color:                  #E6E6E6;
-	selbg:                       argb:507985A3;
-	actbg:                       argb:507985A3;
-	urgbg:                       argb:50323232;
-	winbg:			     #E6E6E6;
+	background-color:            rgba( 50, 63, 79, 95% );
+	text-color:                  #DDDDDD;
+	selbg:                       #A796DD;
+	actbg:                       #A796DD;
+	urgbg:                       #FCDA98;
+	winbg:			     #DDEDED;
 
 	selected-normal-foreground:  @winbg;
 	normal-foreground:           @text-color;
@@ -30,7 +33,7 @@ configuration {
 	active-foreground:           @text-color;
 	selected-active-background:  @actbg;
 	active-background:           @selbg;
-
+	font: "Alata 13";
 	line-margin:                 2;
 	line-padding:                2;
 	separator-style:             "none";
@@ -43,35 +46,36 @@ window {
 	location:	 west;
 	anchor:		 west;
 	height:		 100%;
-	width:		 15%;
+	width:		 28%;
 	orientation: horizontal;
 	children:	 [mainbox];
 }
 
 mainbox {
-	spacing:  0em;
+	spacing:  0.8em;
 	children: [ entry,listview,sidebar ];
 }
 
-button { padding: 0px 0px; }
+button { padding: 5px 2px; }
 
 button selected {
 	background-color: @active-background;
-	text-color:       @normal-foreground;
+	text-color:       @background-color;
 }
 
-inputbar {
-	padding: 0px;
-	spacing: 0px;
+inputbar 
+{
+	padding: 5px;
+	spacing: 5px;
 }
 
 listview {
-	spacing: 0em;
+	spacing: 0.5em;
 	dynamic: false;
 	cycle:   true;
 }
 
-element { padding: 5px; }
+element { padding: 10px; }
 
 entry {
 	expand:         false;
@@ -98,8 +102,9 @@ element normal.active {
 element selected.normal {
 	background-color: @selected-normal-background;
 	text-color:       @selected-normal-foreground;
-	border:           0 0px solid 0 0;
+	border:           0 5px solid 0 0;
 	border-color:	    @active-background;
+	font: "Alata 10";
 }
 
 element selected.urgent {
@@ -110,4 +115,19 @@ element selected.urgent {
 element selected.active {
 	background-color: @selected-active-background;
 	text-color:       @selected-active-foreground;
+}
+
+element alternate.normal {
+	background-color: @normal-background;
+	text-color:       @normal-foreground;
+}
+
+element alternate.urgent {
+	background-color: @urgent-background;
+	text-color:       @urgent-foreground;
+}
+
+element alternate.active {
+	background-color: @active-background;
+	text-color:       @active-foreground;
 }

@@ -10,6 +10,7 @@ echo "realname $realname" > $out
 echo "myname $myname" > $out
 echo "mydir $mydir" > $out
 rc=0
+exit 0
 errout() {
     rc=$?
     [[ 0 -eq $rc ]] && rc=1
@@ -30,7 +31,10 @@ sspath="$HOME/bin/startup"
 [[ -d $sspath ]] || errout 'cannot find startup scripts'
 if [[ -z $1 ]]; then
     case $(basename $myname) in
-        'postswitch') items="${arandr_items[@]}" $realname restart ;;
+        'postswitch')
+            items="${arandr_items[@]}" $realname restart
+            pgrep bspwm && $HOME/.config/bspwm/bspwmrc
+            ;;
         'preswitch') items="${arandr_items[@]}" $realname stop ;;
         $(basename $realname))
             $realname info

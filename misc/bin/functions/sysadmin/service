@@ -1,0 +1,95 @@
+#!/usr/bin/dash
+# sdothum - 2016 (c) wtfpl
+
+# Sysadmin
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ......................................................... Init service wrapper
+
+systemd() {
+  usage() {
+    echo "usage: $(basename $0) [status | disable | enable | start | stop | restart | toggle | [-f] mask | unmask | reload] <service>"
+    exit 1
+  }
+
+  sv() { eval sudo systemctl $@; }
+
+  # configure systemd daemon
+  [ "$1" = '-f' ] && { force=true; shift; }
+  case $1 in
+  ''     ) usage ;;
+  disable) sv disable $2; sv stop $2 ;;
+  enable ) sv enable $2; sv start $2 ;;
+  info   ) ;;
+  mask   ) [ $force ] || { ifno "mask $2" && exit || true; } && sv mask $2; exit ;;
+  reload ) sv daemon-reload; exit ;;
+  restart) sv restart $2 ;;
+  start  ) sv start $2 ;;
+  status ) ;;
+  stop   ) sv stop $2 ;;
+  toggle ) sv status $2 >/dev/null 2>&1 && sv stop $2 || sv start $2 2>/dev/null ;;
+  unmask ) sv unmask $2; exit ;;
+  *      ) [ $# -eq 1 ] || usage ;;
+  esac
+
+  sv --no-pager status ${2:-$1}
+  exit
+}
+
+s6() {
+  usage() {
+    echo "usage: $(basename $0) [info | disable | enable | start | stop | restart | toggle] <service>"
+    exit 1
+  }
+
+  sv() { eval sudo 66-$1 $2 $3; }
+
+  # configure s6 daemon
+  case $1 in
+  ''     ) usage ;;
+  disable) sv disable -S $2 ;;
+  enable ) sv enable -S $2 ;;
+  info   ) ;;
+  restart) sv stop $2; sv start $2 ;;
+  start  ) sv start $2 ;;
+  status ) ;;
+  stop   ) sv stop $2 ;;
+  toggle ) sv info -S $2 | grep -v 'Enabled, up' && sv stop $2 || sv start $2 ;;
+  *      ) [ $# -eq 1 ] || usage ;;
+  esac
+
+  sv info -S ${2:-$1}
+  exit
+}
+
+runit() {
+  usage() {
+    echo "usage: $(basename $0) [@] | [status | disable | enable | up | down | restart | mask] <service>"
+    exit 1
+  }
+
+  [ -e /etc/sv/$2 ] || usage
+
+  enabled() { [ -L /var/service/$service ]; }
+  status()  { sleep 1; enabled && sudo sv status $service || ditto service "$service unavailable"; }
+
+  # configure runit daemon
+  service=$2
+  case $1 in
+  ''     ) ls /etc/sv ;;
+  @      ) ls /var/service; sudo find /etc/sv -name down ;;  # active services
+  disable) sudo rm -fv /var/service/$2 ;;
+  down   ) enabled && sudo sv down $2; status ;;
+  enable ) sudo ln -sfv /etc/sv/$2 /var/service/; sudo rm -f /etc/sv/$2/down; status ;;
+  mask   ) enabled && sudo touch /etc/sv/$2/down; status ;;  # down at boot
+  restart) enabled && sudo sv restart $2 || service enable $2; status ;;
+  status ) status ;;
+  up     ) enabled && sudo sv up $2; status ;;
+  *      ) service=$1; enabled && status || usage ;;
+  esac
+  exit
+}
+
+exists runit && runit $@ || exists systemctl && systemd $@ || s6 $@
+
+# vim: set ft=sh: #

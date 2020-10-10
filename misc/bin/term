@@ -1,8 +1,19 @@
 #!/bin/bash
 xterm=kitty
-s="1"
-mon=$(i3-msg -s $(i3 --get-socketpath) -t get_workspaces | \
-    jq '.[] | select(.focused == true) | .output')
-#echo $mon
-[[ "\"eDP1\"" == $mon ]] && s="1.25"
-WINIT_HIDPI_FACTOR=$s $xterm -e tmux -f ~/.tmux.conf
+xterm=alacritty
+misc="-vv"
+class="--class myterm"
+xflag=""
+cmd="-e tmux"
+lpath=/tmp/$xterm.log
+touch $lpath
+echo "****************************************" >> $lpath
+echo "********* $(date)  ********************" >> $lpath
+echo >> $lpath
+$xterm $misc $class $xflag $cmd >$lpath 2>&1
+#s="1"
+# mon=$(i3-msg -s $(i3 --get-socketpath) -t get_workspaces | \
+#     jq '.[] | select(.focused == true) | .output')
+# #echo $mon
+# [[ "\"eDP1\"" == $mon ]] && s="1.25"
+# WINIT_HIDPI_FACTOR=$s $xterm -e tmux -f ~/.tmux.conf

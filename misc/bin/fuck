@@ -1,0 +1,21 @@
+#!/bin/bash
+s0=eDP-1
+s1=DP-1-1.3
+s2=DP-1-1.1
+s3=DP-1-1.2
+mode="--mode 2560x1440"
+c1="xrandr --output $s0 --auto --primary"
+c2="xrandr --output $s1 $mode --right-of $s0"
+c3="xrandr --output $s2 $mode --right-of $s1"
+c4="xrandr --output $s3 $mode --right-of $s2"
+
+
+echo $c1
+$c1
+echo $c2
+$c2
+echo $c3
+$c3
+echo $c4
+$c4
+

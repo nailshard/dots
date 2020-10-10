@@ -1,4 +1,18 @@
 #!/bin/bash
+MODE="random"
+INFO=$(fortune -o -s darkknight | tr -d \"\' )
+VALIDATE="feeling lucky?"
+INVALID="idiot."
+USERNAME="who are you? "
+PASSWORD="prove it. "
+LOCKDELAY=30
+TIMEOUT=3
+MISC="" #"-nolock"
+args="-mode $MODE -info \"$INFO\" -validate '$VALIDATE' -invalid '$INVALID' $MISC"
+cmd="xlock $args"
+echo $cmd | bash
+echo $cmd
+exit $?
 
 ht="7e"
 
@@ -21,7 +35,7 @@ convert -font helvetica -background black -fill white -pointsize 60 -gravity cen
         --image=/tmp/lock.jpg
 
     --greetertext \"$(fortune disclaimer)\" \
-         --greetersize 100 \
+         --greetersize 10 \
          --greeter-font  Source-Code-Pro \
          --datesize 48 \
          --date-font  Source-Code-Pro \

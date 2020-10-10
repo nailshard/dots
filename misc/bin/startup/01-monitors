@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+
+xrandr --output eDP1 --primary --mode 3840x2160 --scale 0.5x0.5
+exit $?
+
 for m in $(xrandr | grep discon); do
     xrandr --output $m --off
 done

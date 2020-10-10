@@ -1,0 +1,20 @@
+rofi.theme: ~/.config/rofi/gbox-ds.rasi
+rofi.show-icons: false
+rofi.font: Overpass 14
+rofi.sort: true
+rofi.sorting-method: fzf
+rofi.disable-history: false
+rofi.case-sensitive: false
+rofi.cycle: true
+rofi.sidebar-mode: false
+rofi.eh: 2
+rofi.separator-style: "none"
+rofi.hide-scrollbar: true
+rofi.fullscreen: false
+rofi.fake-transparency: true
+rofi.window-format: "{w}    {i}{c}   {t}"
+rofi.click-to-exit: true
+rofi.show-match: true
+
+
+

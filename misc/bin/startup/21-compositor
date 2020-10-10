@@ -10,20 +10,25 @@ kil() {
 }
 
 unkil() {
+    set -x
     [[ "x" != "x$LOGIT" ]] && log=$1.log || log=/dev/null
     cmd=$@
     args=""
-    echo "running cmd args: -->|$cmd|<-- -->|$args|<--"
-    $1 $@ >$log 2>&1 & disown ; return $?
+    echo -e "running cmd args: -->|$cmd|<-- -->|$args|<--"
+    echo "--------> $cmd $args >$log 2>&1 & disown"
+
+    # $1 $@ >$log 2>&1 & disown ; return $?
+    $cmd $args >$log 2>&1 & disown
+    set +x
 }
 
 
 #[[ -n $myshit ]] || myshit=( geoclue redshift-gtk )
-[[ -n $myshit ]] || myshit=( redshift )
+[[ -n $myshit ]] || myshit=( picom )
 for shit in ${myshit[@]}; do
 case $1 in
     start)
-        unkil $shit -P ;;
+        unkil $shit  ;;
     stop)
         if [[ "redshift" == $shit ]]; then
             pkill redshift

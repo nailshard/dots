@@ -1,0 +1,36 @@
+#!/bin/sh
+#!/bin/bash
+windows=($(bspc query -N -n .window.hidden))
+index="$(for i in "${!windows[@]}"; do printf "%s %s\n" $i "$(xtitle ${windows[i]})"; done | rofi -dmenu)" &&
+    bspc node "${windows[${index%% *}]}" -g hidden=off &&
+    bspc node "${windows[${index%% *}]}" -d ??? &&
+    bspc node -f "${windows[${index%% *}]}"
+exit $?
+# bspwm
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ................................................................... Scratchpad
+echo $0
+tmux list-sessions | grep -q scratch || tmux new -d -s scratch
+cmd="tmux at -t scratch"
+pgrep -f scratchpad || alacritty --class 'scratchpad' -e $cmd
+
+xdotool search --onlyvisible --classname 'scratchpad' windowunmap || \
+    xdotool search --classname 'scratchpad' windowmap
+exit $?
+
+
+# toggle scratchpad
+if ! xdotool search --onlyvisible --classname 'scratchpad' windowunmap; then
+    if ! xdotool search --classname 'scratchpad' windowmap; then
+        cmd="zsh -c tmux at -t scratch || tmux new -s scratch"
+        alacritty --class 'scratchpad' -e $cmd &
+    else
+        echo no inner
+    fi
+
+  #     bspc window --swap biggest
+else
+    echo no outter
+fi
+
